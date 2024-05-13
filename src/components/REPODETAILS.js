@@ -22,7 +22,8 @@ const REPODETAILS = ({parameter}) =>{
         {
             result &&
             <>
-                <REPO name={result.name} url={result.html_url} id={result.id} created_at={result.created_at}updated_at={result.updated_at}/>
+                <REPO name={result.name} id={result.id} created_at={result.created_at}updated_at={result.updated_at}/>
+                <button>Update</button> <button>Delete</button>
             </>
             
         }

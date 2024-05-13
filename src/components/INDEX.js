@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import fetcher from '../function/fetchApi';
+import { fetchRepositories } from '../function/fetchApi';
 import { REPOS } from './REPOS';
 import MODAL from './MODAL';
 import FORM from './FORM';
@@ -9,11 +10,16 @@ const INDEX = () =>{
     const[error, setCatError] = useState("")
     const[page, setPage] = useState(1)
     const[open, setOpen] = useState(false)
+    const[repoNumber, setRepoNumber] = useState(0)
+
   
     useEffect(()=>{
-      fetcher(setResult, setCatError, page)
-      
-    }, [setResult, page])
+      const getNumberOfRepos = async ()=>{
+        await fetchRepositories(setRepoNumber)
+        fetcher(setResult, setCatError, page) 
+      }
+      getNumberOfRepos()         
+    }, [page])
   
     const previousPage = () =>{
       if(page > 1){
@@ -25,21 +31,21 @@ const INDEX = () =>{
     }
 
     const nextPage = () =>{
-      if(page < 16){
+      if(page < repoNumber){
           setPage(page + 1)
       }
       else{
-        setPage(16)
+        setPage(repoNumber)
       }
     }
 
     const handleClose = () => {
       setOpen(false);
-  };
+    };
 
-  const handleOpen = () => {
-      setOpen(true);
-  };
+    const handleOpen = () => {
+        setOpen(true);
+    };
  
   
     return(
@@ -62,7 +68,6 @@ const INDEX = () =>{
         
         <button className="button" onClick={previousPage}>Previous</button> <button className="button" onClick={nextPage}>Next</button>
         <button className="button green"onClick={handleOpen}>Create</button>
-        <button></button>
         {
           error && <p>{error}</p>
         }
