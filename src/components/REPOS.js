@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router"
 
-export const REPOS = ({name, url, id, created_at, updated_at}) => {
+export const REPOS = ({name, id, modal_function,  description}) => {
      
     const navigate = useNavigate()
     //const dateTimeString = created_at;
@@ -16,7 +16,11 @@ export const REPOS = ({name, url, id, created_at, updated_at}) => {
     // const created = convertDateTime(created_at)
     // const updated = convertDateTime(updated_at)
 
-   
+   //setname(name)
+
+   const handleClick = () =>{
+        modal_function(name)
+   }
     
     return(
         <>
@@ -24,10 +28,13 @@ export const REPOS = ({name, url, id, created_at, updated_at}) => {
                 () =>{
                     navigate(`repo/${name}`)
                 }
-            }>{name}</h2>
+            }>{name}</h2>{
+                description? <span>{description}</span>:<span></span>
+            }
             <p>ID: <span className="repo-id">{id}</span></p>
-            {/* <p>Created: <span className="created">{created.date}</span> Time: <span className="created">{created.time}</span> </p>
-            <p>Updated: <span className="created">{updated.date}</span> Time: <span className="created">{updated.time}</span> </p> */}
+            <p>
+                <button className="button" onClick={handleClick}>Update</button> <button className="button">Delete</button>
+            </p>
         </>
     )
 }

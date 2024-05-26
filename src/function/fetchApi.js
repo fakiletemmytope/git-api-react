@@ -91,8 +91,8 @@ export const createRepo = async (repoName, description, setResult, setCatError) 
       }
 
       const data = await response.json();
-      setResult(data);
-      //console.log(data);
+      setResult(data)
+      
   } catch (error) {
       //console.error(error.message);
       setCatError(error.message);
@@ -100,7 +100,7 @@ export const createRepo = async (repoName, description, setResult, setCatError) 
 };
 
 //for getting the total number of a user's repositries
-export const fetchRepositories = async (setRepoNumber) => {
+export const fetchRepositories = async () => {
   let pageNumber = 1;
   let totalRepositories = 0
   await fetch(`${BASE_URL}users/${OWNER}/repos?per_page=100&page=${pageNumber}`, 
@@ -126,8 +126,9 @@ export const fetchRepositories = async (setRepoNumber) => {
       //console.log(repos);
       totalRepositories += repos.length;
 
-      if (repos.length < 100) {
+      if (repos.length <= 100) {
           //console.log(`Total number of repositories in your GitHub account: ${totalRepositories}`);
+          return totalRepositories
       } else {
           fetchRepositories(pageNumber + 1); // Fetch the next page
       }
@@ -136,16 +137,71 @@ export const fetchRepositories = async (setRepoNumber) => {
       console.error(error);
   });
   
-  setRepoNumber(totalRepositories)
+  //await setRepoNumber(totalRepositories)
+  return totalRepositories
 
 }
 
 //for updating a repo
-export const updateRepo = async(repoName) =>{
+export const updateRepo = async(repoName, description, setResult, setCatError) =>{
+  const repo = {
+    "name": repoName,
+    "description": description,
+    "homepage": "https://github.com",
+    "private": false,
+    "is_template": true
+};
+
+try {
+    const response = await fetch(`${BASE_URL}repos/${OWNER}/${repoName}`, {
+        method: 'PATCH',
+        headers: {
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': VERSION,
+             Authorization: `Bearer ${TOKEN}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(repo)
+    });
+
+    if (!response.ok) {
+        throw new Error('Network response was not OK');
+    }
+
+    const data = await response.json();
+    setResult(data);
+    //console.log(data);
+} catch (error) {
+    //console.error(error.message);
+    setCatError(error.message);
+}
 
 }
 
 export const deleteRepo = async (reponame) =>{
+    
+    try {
+        const response = await fetch(`${BASE_URL}repos/${OWNER}/${reponame}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/vnd.github+json',
+                'X-GitHub-Api-Version': VERSION,
+                 Authorization: `Bearer ${TOKEN}`,
+                'Content-Type': 'application/json'
+            },
+            
+        });
+    
+        if (!response.ok) {
+            throw new Error('Network response was not OK');
+        }
+    
+        //const data = await response.json();
+        //setResult(data);
+        
+    } catch (error) {
+        //setCatError(error.message);
+    }
 
 }
 

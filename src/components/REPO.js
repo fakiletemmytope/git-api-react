@@ -1,6 +1,6 @@
-// import { useNavigate } from "react-router"
 
-export const REPO = ({name, url, id, created_at, updated_at}) => {
+export const REPO = ({name, description, id, created_at, updated_at}) => {
+    
      
     // const navigate = useNavigate()
     //const dateTimeString = created_at;
@@ -20,10 +20,13 @@ export const REPO = ({name, url, id, created_at, updated_at}) => {
     
     return(
         <>
-            <h2>{name}</h2>
+            <h2>{name}</h2>{
+                description?<span>{description}</span>:<span></span>
+            }
             <p>ID: <span className="repo-id">{id}</span></p>
             <p>Created: <span className="created">{created.date}</span> Time: <span className="created">{created.time}</span> </p>
-            <p>Updated: <span className="created">{updated.date}</span> Time: <span className="created">{updated.time}</span> </p>
+            <p>Updated: <span className="created">{updated.date}</span> Time: <span className="created">{updated.time}</span> </p>           
+           
         </>
     )
 }

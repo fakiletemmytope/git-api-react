@@ -1,7 +1,8 @@
-const MODAL = ({children, onClose, isOpen}) =>{
-    if (!isOpen) return null;
+const UPDATEMODAL = ({children, onClose, isOpenUM}) =>{
+    if (!isOpenUM) return null;
+   
     return(
-    <div
+        <div
         
         style={{
             position: "fixed",
@@ -27,12 +28,11 @@ const MODAL = ({children, onClose, isOpen}) =>{
                 boxShadow: "2px solid black",
             }}
         >
-            {children}
-        
+            {children}        
 
         </div>
     </div>
     )
 }
 
-export default MODAL
+export default UPDATEMODAL

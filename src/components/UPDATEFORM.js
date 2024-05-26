@@ -1,24 +1,25 @@
 import { useState } from "react"
-import { createRepo } from "../function/fetchApi"
+import { updateRepo } from "../function/fetchApi"
 
-const FORM = ({onClose}) =>{
-    const[name, setName] = useState("")
+
+const UPDATEFORM = ({onClose, reponame}) =>{
+    //const[name, setName] = useState("")
     const [description, setDescription] = useState("")
     const[formError, setFormError] = useState("")
     const[result, setResult] = useState("")
     const[error, setError] = useState("")
-
-    const HandleSubmit = (e) => {
-        //console.log("Hurray")
-        //alert("baddo")
-
+    //setName(reponame) 
+    
+    const HandleSubmit = async (e) => { 
+        //console.log(`this ${reponame}`)
         e.preventDefault()
-        if(name === "" || description === ""){
+        if(description === ""){
             setFormError("All fields must be filled")
         }
         else{
-            createRepo(name, description, setResult, setError);
-            setName("");
+            console.log(`${reponame}, ${description}`)
+            updateRepo(reponame, description, setResult, setError);
+            //setName("");
             setDescription("");
             setFormError("");
             onClose();
@@ -28,7 +29,7 @@ const FORM = ({onClose}) =>{
     return(
         <div>
             <form>
-                <h3>Create a Repository</h3>
+                <h3>Update {reponame}</h3>
                 {
                     formError && <p>{formError}</p>
                 }
@@ -38,10 +39,9 @@ const FORM = ({onClose}) =>{
                 {
                     result && <p>{result}</p>
                 }
-                <p> <span>{name}</span>
-                    <label>Repo Name:</label><br/><br/>
-                    <input type="text" value={name}
-                    onChange={(e) => setName(e.target.value) }/>
+                <p> 
+                    <label>Repository Name</label><br/><br/>
+                    <input type="text" value={reponame} disabled/>
                 </p>
                 <p>
                     <label>Description:</label><br/><br/>
@@ -57,4 +57,4 @@ const FORM = ({onClose}) =>{
     )
 }
 
-export default FORM
+export default UPDATEFORM
